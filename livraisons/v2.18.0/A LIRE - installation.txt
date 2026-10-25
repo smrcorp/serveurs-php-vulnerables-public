@@ -1,0 +1,83 @@
+Inventaire PHP — version 2.18.0
+Livraison du RSSI des Hôpitaux de Corrèze, signée le 25/10/2026 à 14:24.
+
+Le RSSI dépose trois fichiers dans le dossier OneDrive commun aux hôpitaux :
+  - InventairePHP-v2.18.0.zip      le programme ;
+  - InventairePHP-v2.18.0.zip.sig  la signature du RSSI (elle prouve que l'archive vient de lui) ;
+  - cette notice.
+et envoie à chaque responsable informatique, par courriel, l'empreinte de l'archive.
+
+Toujours commencer par copier l'archive ET sa signature, ensemble, du dossier OneDrive vers
+Téléchargements (l'outil ne cherche pas dans OneDrive).
+
+
+EMPREINTE ET SIGNATURE, EN BREF
+-------------------------------
+
+Deux contrôles différents, pour deux moments différents ; vous n'en faites qu'un seul à la main.
+
+L'EMPREINTE (64 caractères, dans le courriel du RSSI)
+  C'est le « numéro unique » de l'archive, calculé à partir de tout son contenu : si un seul
+  caractère de l'archive change, l'empreinte change complètement. Elle se vérifie UNE SEULE FOIS,
+  à la première installation (la commande du courriel le fait pour vous), parce qu'à ce moment rien
+  n'est encore installé pour contrôler à votre place. Elle arrive par courriel et non par OneDrive : quelqu'un qui remplacerait l'archive
+  dans OneDrive ne pourrait pas modifier en même temps le courriel du RSSI.
+
+LA SIGNATURE (le fichier .sig, à côté de l'archive)
+  C'est le cachet du RSSI posé sur cette archive précise, avec une clé personnelle qui ne quitte
+  jamais son poste. L'outil installé chez vous connaît la forme de ce cachet et le contrôle tout
+  seul à chaque mise à jour (option 5) : archive venant bien du RSSI, et pas modifiée depuis.
+  Vous n'avez rien à comparer.
+
+Rien de tout cela n'est secret : ni l'empreinte, ni la signature, ni cette notice ne permettent
+de signer à la place du RSSI.
+
+
+PREMIÈRE INSTALLATION (rien n'est encore installé sur le poste)
+----------------------------------------------------------------
+
+1. Vérifier l'archive avec le courriel du RSSI (une seule fois)
+   a. Vérifier que le courriel vient bien de l'adresse du RSSI.
+   b. Ouvrir la page jointe au courriel, « Verifier InventairePHP-v2.18.0.html » (double-clic).
+   c. Y déposer l'archive copiée dans Téléchargements (la glisser, ou cliquer pour la choisir).
+   d. La page affiche en grand :
+        en vert  « Archive authentique »  -> continuer à l'étape 2 ;
+        en rouge « Attention »            -> ne rien installer, appeler le RSSI.
+      La page vient du courriel, jamais du dossier OneDrive : c'est ce qui la rend fiable.
+      Sans la page : la ligne PowerShell du courriel fait la même vérification.
+
+2. Décompresser
+   a. Créer le dossier C:\Outils\inventaire (droits limités à votre compte).
+   b. Clic droit sur InventairePHP-v2.18.0.zip, « Extraire tout… », choisir C:\Outils\inventaire.
+
+3. Lancer
+   a. Dans C:\Outils\inventaire, double-cliquer sur « Inventaire PHP.bat ».
+      Si Windows affiche « Windows a protégé votre ordinateur » : « Informations complémentaires »,
+      puis « Exécuter quand même » (seulement après l'étape 1 réussie).
+   b. Le menu contrôle le poste : choisir 1 si Python est présent, sinon 2 (installe Python dans le
+      dossier, sans droits d'administration).
+   c. Le navigateur s'ouvre sur l'outil ; garder la fenêtre noire ouverte pendant l'utilisation.
+
+4. Premier lancement
+   a. Choisir votre hôpital quand l'outil le demande ; si votre établissement n'est pas dans la
+      liste, « Mon établissement n'est pas dans la liste » permet de déclarer votre organisation
+      et vos hôpitaux (modifiable ensuite dans Paramétrage › Réglages › Données).
+   b. Des données d'exemple fictives sont chargées : les supprimer avant d'importer les vôtres.
+   c. Aucune adresse n'est interrogée tant que vous n'avez pas importé vos VLAN, serveurs et noms
+      d'hôtes (Paramétrage) puis cliqué « Appliquer le périmètre » (1 · Périmètre).
+   d. Avant tout scan réel, votre établissement consigne sa propre autorisation écrite du balayage
+      (qui autorise, quel périmètre, quelles actions) : l'outil n'interroge que ce que vous lui
+      donnez, sous votre responsabilité.
+
+
+MISE À JOUR (l'outil est déjà installé)
+---------------------------------------
+
+1. Copier l'archive et sa signature (.sig), ensemble, du dossier OneDrive vers Téléchargements,
+   sans décompresser l'archive. Pas besoin de vérifier l'empreinte à la main.
+2. Ouvrir le dossier où l'outil est installé (par exemple C:\Outils\inventaire) ; si la fenêtre
+   noire de l'outil est ouverte, la fermer. Double-cliquer sur « Inventaire PHP.bat » et choisir 5.
+3. L'outil vérifie seul la signature du RSSI : si elle est bonne, il sauvegarde vos données et
+   installe. Sinon il refuse (« archive non signée ou signature invalide : installation refusée,
+   prévenez le RSSI »), ne touche à rien et range l'archive dans le dossier « quarantaine » :
+   prévenir le RSSI.

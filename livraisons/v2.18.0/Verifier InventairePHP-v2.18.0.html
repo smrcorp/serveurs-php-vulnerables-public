@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Vérifier InventairePHP-v2.18.0.zip</title>
+<style>
+body{font-family:Calibri,Carlito,'Segoe UI',sans-serif;background:#f4f7fb;color:#1b2430;margin:0}
+header{background:#006AB2;color:#fff;padding:14px 26px;border-bottom:5px solid #92D050}
+header h1{margin:0;font-size:22px}header p{margin:2px 0 0;font-size:14px;opacity:.9}
+main{max-width:720px;margin:26px auto;padding:0 16px}
+#zone{background:#fff;border:3px dashed #548DD4;border-radius:14px;padding:46px 20px;text-align:center;font-size:19px;cursor:pointer}
+#zone.sur{background:#DCE6F1}
+#zone b{color:#006AB2}
+#zone .pt{font-size:14px;color:#5f6b7a;margin-top:8px}
+#res{display:none;border-radius:14px;padding:26px 20px;text-align:center;margin-top:18px}
+#res h2{margin:0 0 6px;font-size:30px}#res p{margin:0;font-size:17px}
+.ok{display:block!important;background:#e8f3e8;border:3px solid #2e7d32}.ok h2{color:#2e7d32}
+.ko{display:block!important;background:#fbe9f0;border:3px solid #B71251}.ko h2{color:#B71251}
+.att{display:block!important;background:#fdf4e3;border:3px solid #9a5800}.att h2{color:#9a5800}
+footer{max-width:720px;margin:14px auto 30px;padding:0 16px;font-size:13px;color:#5f6b7a}
+input{display:none}
+</style></head><body>
+<header><h1>Inventaire PHP — vérifier l'archive avant la première installation</h1>
+<p>Version 2.18.0 · page envoyée par le RSSI des Hôpitaux de Corrèze, avec le courriel de livraison</p></header>
+<main>
+ <div id="zone" tabindex="0" role="button" aria-label="Choisir l'archive à vérifier">
+  <b>Déposez ici l'archive InventairePHP-v2.18.0.zip</b><br>(glissez-la depuis Téléchargements, ou cliquez pour la choisir)
+  <div class="pt">Rien n'est envoyé nulle part : la vérification se fait sur votre poste.</div>
+ </div>
+ <input type="file" id="fichier" accept=".zip">
+ <div id="res" role="status"></div>
+</main>
+<footer>Cette page compare le « numéro unique » (empreinte SHA-256) de l'archive déposée à celui attendu :
+<span style="font-family:Consolas,monospace">a4ea26a86db331bdb9976aeb3d1bfa0822c0194b49450930fc2fdebcd0034162</span>. Elle ne vaut que reçue par le courriel du RSSI.</footer>
+<script>
+var attendu='a4ea26a86db331bdb9976aeb3d1bfa0822c0194b49450930fc2fdebcd0034162';
+var zone=document.getElementById('zone'),entree=document.getElementById('fichier'),res=document.getElementById('res');
+function montrer(classe,titre,texte){res.className=classe;res.innerHTML='<h2></h2><p></p>';
+ res.firstChild.textContent=titre;res.lastChild.textContent=texte}
+function verifier(f){
+ if(!f)return;
+ if(!(window.crypto&&crypto.subtle)){montrer('att','Vérification impossible ici',"Ce navigateur ne permet pas le calcul : utilisez la ligne PowerShell du courriel.");return}
+ montrer('att','Calcul en cours…','');
+ f.arrayBuffer().then(function(b){return crypto.subtle.digest('SHA-256',b)}).then(function(h){
+  var o='';new Uint8Array(h).forEach(function(x){o+=x.toString(16).padStart(2,'0')});
+  if(o===attendu){montrer('ok','✓ Archive authentique','Même empreinte que celle du RSSI : vous pouvez décompresser et installer « '+f.name+' ».')}
+  else if(f.name!=='InventairePHP-v2.18.0.zip'){montrer('att','Ce n’est pas la bonne archive','Fichier déposé : « '+f.name+' ». Déposez InventairePHP-v2.18.0.zip, copiée de OneDrive vers Téléchargements.')}
+  else{montrer('ko','✗ Attention : empreinte différente','N’installez rien et appelez le RSSI. L’archive ne correspond pas à celle qu’il a signée.')}
+ }).catch(function(){montrer('att','Lecture impossible','Réessayez, ou utilisez la ligne PowerShell du courriel.')})}
+zone.onclick=function(){entree.click()};
+zone.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();entree.click()}};
+entree.onchange=function(){verifier(entree.files[0])};
+['dragover','dragenter'].forEach(function(ev){zone.addEventListener(ev,function(e){e.preventDefault();zone.className='sur'})});
+['dragleave','drop'].forEach(function(ev){zone.addEventListener(ev,function(e){e.preventDefault();zone.className=''})});
+zone.addEventListener('drop',function(e){verifier(e.dataTransfer.files[0])});
+</script></body></html>

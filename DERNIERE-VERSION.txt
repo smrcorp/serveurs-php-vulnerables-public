@@ -1,1 +1,2 @@
-aucune
+v2.18.0 — publiée le 25/10/2026 — SHA-256 a4ea26a86db331bdb9976aeb3d1bfa0822c0194b49450930fc2fdebcd0034162
+Fichiers : livraisons/v2.18.0/
